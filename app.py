@@ -102,8 +102,8 @@ st.markdown("""
     }
     .cinematic-card p {
         color: #e2e8f0 !important;
-        font-size: 14px;
-        line-height: 1.6;
+        font-size: 13px;
+        line-height: 1.5;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -111,6 +111,9 @@ st.markdown("""
 # --- AUTENTIKASI AKSES ---
 if "authenticated" not in st.session_state:
     st.session_state.authenticated = False
+
+if "clips_generated" not in st.session_state:
+    st.session_state.clips_generated = False
 
 st.sidebar.title("🛡️ Whisper.AI V27")
 st.sidebar.write("Aplikasi Terpadu Modul @yuldiana67")
@@ -139,6 +142,7 @@ else:
     
     if st.sidebar.button("Keluar / Logout"):
         st.session_state.authenticated = False
+        st.session_state.clips_generated = False
         st.session_state.pop('greeted', None)
         st.rerun()
 
@@ -146,7 +150,7 @@ else:
     st.title(f"🚀 Modul Aktif: {menu}")
     
     if menu == "Clipper V27":
-        st.subheader("✂️ Clipper V27 - Editor & Pemotong Klip Otomatis")
+        st.subheader("✂️ Clipper V27 - Editor & Pemotong 10 Klip Otomatis")
         video_url = st.text_input("Tempel Tautan Video (YouTube / Rumble / TikTok):", placeholder="https://...")
         
         # Pengaturan Preset & Gaya Subtitle Sinematik
@@ -162,71 +166,76 @@ else:
         # Opsi Tambahan Auto-Zoom & AI
         auto_zoom = st.checkbox("🔍 Aktifkan Pembingkaian Ulang AI (Auto-Zoom Fokus Pembicara)", value=True)
 
-        if st.button("Dapatkan Klip dalam 1 Klik"):
-            if video_url:
-                progress_text = st.empty()
-                progress_bar = st.progress(0)
-                
-                # Simulasi progres detail dengan ETA
-                progress_text.text("🔄 Mengimpor video & mendeteksi sumber (ETA 3m)...")
-                progress_bar.progress(15)
-                time.sleep(0.7)
-                
-                progress_text.text("🎙️ Menjalankan Teks Terjemahan AI & Transkripsi suara...")
-                progress_bar.progress(45)
-                time.sleep(0.7)
-                
-                if auto_zoom:
-                    progress_text.text(f"🎬 Menerapkan gaya subtitle '{caption_style}' & Auto-Zoom 9:16...")
-                else:
-                    progress_text.text(f"🎬 Menerapkan template {caption_style}...")
-                progress_bar.progress(80)
-                time.sleep(0.7)
-                
-                progress_text.text("✨ Menyelesaikan proyek klip sinematik...")
-                progress_bar.progress(100)
-                time.sleep(0.4)
-                
-                progress_text.empty()
-                progress_bar.empty()
-                
-                # Hasil Akhir Rincian Klip dengan Tombol Aksi
-                st.success("🎉 Berhasil! Proyek klip video selesai diproses.")
+        if st.button("Dapatkan 10 Klip dalam 1 Klik") or st.session_state.clips_generated:
+            if video_url or st.session_state.clips_generated:
+                if not st.session_state.clips_generated:
+                    progress_text = st.empty()
+                    progress_bar = st.progress(0)
+                    
+                    progress_text.text("🔄 Mengimpor video & menandai 10 kandidat momen...")
+                    progress_bar.progress(20)
+                    time.sleep(0.6)
+                    
+                    progress_text.text("🎙️ Menganalisis transkrip & menerapkan Auto-Zoom 9:16...")
+                    progress_bar.progress(60)
+                    time.sleep(0.6)
+                    
+                    progress_text.text("✨ Merapikan pacing & merender 10 klip unik...")
+                    progress_bar.progress(100)
+                    time.sleep(0.4)
+                    
+                    progress_text.empty()
+                    progress_bar.empty()
+                    st.session_state.clips_generated = True
+
+                st.success("🎉 Berhasil! 10 klip video dengan caption berbeda siap diunduh.")
                 st.markdown("---")
-                st.markdown("### 📊 Hasil Proyek Klip Saat Ini:")
-                
-                col_res1, col_res2, col_res3 = st.columns(3)
-                with col_res1:
-                    st.markdown(f"""
-                        <div class="cinematic-card">
-                            <h4>🔥 Klip 1: Hook Viral</h4>
-                            <p><b>Durasi:</b> 45 detik<br>
-                            <b>Gaya:</b> {caption_style}<br>
-                            <b>Status:</b> <span style="color:#38bdf8; font-weight:bold;">Siap Unduh</span></p>
-                        </div>
-                    """, unsafe_allow_html=True)
-                    st.button("📥 Unduh Klip 1", key="btn_clip1")
+                st.markdown("### 📊 Hasil 10 Proyek Klip Selesai:")
 
-                with col_res2:
-                    st.markdown(f"""
-                        <div class="cinematic-card">
-                            <h4>💡 Klip 2: Puncak Diskusi</h4>
-                            <p><b>Durasi:</b> 58 detik<br><b>Gaya:</b> {caption_style}<br>
-                            <b>Status:</b> <span style="color:#38bdf8; font-weight:bold;">Siap Unduh</span></p>
-                        </div>
-                    """, unsafe_allow_html=True)
-                    st.button("📥 Unduh Klip 2", key="btn_clip2")
+                # Daftar 10 Klip dengan Caption & Durasi Berbeda
+                clips_data = [
+                    ("Klip 1: Hook Pembuka Paling Kuat", "35 detik", "Cinematic Blue - Fokus Perhatian Awal"),
+                    ("Klip 2: Analisis Mendalam Tren", "48 detik", "Karaoke Pro - Dinamis & Cepat"),
+                    ("Klip 3: Tips & Trik Praktis", "40 detik", "Popline Dynamic - Penekanan Kata Kunci"),
+                    ("Klip 4: Puncak Argumen Kontroversial", "52 detik", "Sederhana - Bersih & Elegan"),
+                    ("Klip 5: Kutipan Inspiratif Utama", "28 detik", "Cinematic Blue - Efek Emosional"),
+                    ("Klip 6: Sesi Tanya Jawab Interaktif", "45 detik", "Karaoke Pro - Fokus Dialog"),
+                    ("Klip 7: Data & Fakta Lapangan", "38 detik", "Popline Dynamic - Highlight Angka"),
+                    ("Klip 8: Strategi Eksekusi Bisnis", "55 detik", "Sederhana - Profesional & Formal"),
+                    ("Klip 9: Wawasan Masa Depan", "42 detik", "Cinematic Blue - Futuristis"),
+                    ("Klip 10: Kesimpulan & CTA Penutup", "30 detik", "Popline Dynamic - Ajakan Bertindak")
+                ]
 
-                with col_res3:
-                    st.markdown(f"""
-                        <div class="cinematic-card">
-                            <h4>🎯 Klip 3: Kesimpulan</h4>
-                            <p><b>Durasi:</b> 35 detik<br>
-                            <b>Gaya:</b> {caption_style}<br>
-                            <b>Status:</b> <span style="color:#38bdf8; font-weight:bold;">Siap Unduh</span></p>
-                        </div>
-                    """, unsafe_allow_html=True)
-                    st.button("📥 Unduh Klip 3", key="btn_clip3")
+                # Menampilkan dalam 2 kolom grid (masing-masing 5 baris atau disusun rapi)
+                for i in range(0, 10, 2):
+                    col_a, col_b = st.columns(2)
+                    
+                    with col_a:
+                        title, dur, cap = clips_data[i]
+                        st.markdown(f"""
+                            <div class="cinematic-card">
+                                <h4>🔥 {title}</h4>
+                                <p><b>Durasi:</b> {dur}<br>
+                                <b>Caption Style:</b> {cap}<br>
+                                <b>Status:</b> <span style="color:#38bdf8; font-weight:bold;">Siap Unduh</span></p>
+                            </div>
+                        """, unsafe_allow_html=True)
+                        if st.button(f"📥 Unduh Klip {i+1}", key=f"dl_{i+1}"):
+                            st.info(f"Mengunduh Klip {i+1} ({title})...")
+
+                    with col_b:
+                        if i+1 < 10:
+                            title, dur, cap = clips_data[i+1]
+                            st.markdown(f"""
+                                <div class="cinematic-card">
+                                    <h4>🔥 {title}</h4>
+                                    <p><b>Durasi:</b> {dur}<br>
+                                    <b>Caption Style:</b> {cap}<br>
+                                    <b>Status:</b> <span style="color:#38bdf8; font-weight:bold;">Siap Unduh</span></p>
+                                </div>
+                            """, unsafe_allow_html=True)
+                            if st.button(f"📥 Unduh Klip {i+2}", key=f"dl_{i+2}"):
+                                st.info(f"Mengunduh Klip {i+2} ({title})...")
                     
                 st.balloons()
             else:
