@@ -42,9 +42,10 @@ def speak(text):
         pass
 
 # --- FUNGSI UNDUH VIDEO ASLI VIA YT-DLP (TANPA FFMPEG) ---
+# --- FUNGSI UNDUH VIDEO OTOMATIS & AMAN ---
 def download_real_video(url):
     ydl_opts = {
-        'format': 'best[ext=mp4]/best',  # Format tunggal siap unduh tanpa perlu ffmpeg
+        'format': 'best',  # Memilih kualitas terbaik yang tersedia secara otomatis
         'outtmpl': 'downloaded_video.mp4',
         'quiet': True,
         'no_warnings': True,
@@ -52,7 +53,16 @@ def download_real_video(url):
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         ydl.download([url])
     
-    with open('downloaded_video.mp4', 'rb') as f:
+    # Memeriksa file hasil unduhan
+    filename = 'downloaded_video.mp4'
+    if not os.path.exists(filename):
+        # Cari file alternatif jika ekstensi berbeda
+        for f in os.listdir('.'):
+            if f.startswith('downloaded_video'):
+                filename = f
+                break
+                
+    with open(filename, 'rb') as f:
         data = f.read()
     return data
 
