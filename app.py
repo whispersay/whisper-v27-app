@@ -41,24 +41,25 @@ def speak(text):
     except Exception:
         pass
 
-# --- FUNGSI UNDUH VIDEO AMAN (ANTI-MERGER & ANTI-FFMPEG) ---
+# --- FUNGSI UNDUH VIDEO AMAN (ANTI-MERGER & TANPA FFMPEG) ---
 def download_real_video(url):
-    # Memaksa yt-dlp mengambil format video tunggal beresolusi rendah (biasanya 360p/720p) yang sudah ada audionya tanpa perlu merge
+    # Menggunakan format tunggal '18' (MP4 360p) yang sudah memiliki audio & video bawaan tanpa butuh ffmpeg
     ydl_opts = {
-        'format': '18',  # Format ID YouTube standar MP4 360p (sudah termasuk video + audio, tidak butuh ffmpeg)
+        'format': '18',
         'outtmpl': 'downloaded_video.mp4',
         'quiet': True,
         'no_warnings': True,
         'geo_bypass': True,
+        'socket_timeout': 15,
     }
     
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             ydl.download([url])
     except Exception:
-        # Fallback jika format 18 tidak tersedia: biarkan yt-dlp mencari format apa saja yang paling kecil tanpa merger
+        # Fallback cadangan jika format 18 dibatasi oleh YouTube
         ydl_opts_fallback = {
-            'format': 'worst',
+            'format': 'worst[ext=mp4]/worst',
             'outtmpl': 'downloaded_video.mp4',
             'quiet': True,
         }
