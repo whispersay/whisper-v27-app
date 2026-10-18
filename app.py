@@ -63,9 +63,6 @@ if "authenticated" not in st.session_state:
 st.sidebar.title("🛡️ Whisper.AI V27")
 st.sidebar.write("Aplikasi Terpadu Modul @yuldiana67")
 
-if not st.sidebar.get("greeted_login", False) and not st.session_state.authenticated:
-    pass
-
 if not st.session_state.authenticated:
     st.title("🔐 Akses Terkunci - Whisper.AI")
     input_pass = st.text_input("Masukkan Master Password:", type="password")
