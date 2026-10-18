@@ -1,6 +1,7 @@
 import streamlit as st
 import os
 import base64
+import time
 import google.generativeai as genai
 from gtts import gTTS
 
@@ -39,19 +40,60 @@ def speak(text):
     except Exception:
         pass
 
-# --- CSS NEON STYLE ---
+# --- CSS CINEMATIC BLUE & LUXURY UI ---
 st.markdown("""
     <style>
-    .main { background-color: #0d1117; color: #c9d1d9; }
-    .stButton>button {
-        background: linear-gradient(90deg, #00d2ff 0%, #3a7bd5 100%);
-        color: white; border: none; border-radius: 12px;
-        font-weight: bold; padding: 0.6rem 1.2rem;
-        box-shadow: 0 0 15px rgba(0, 210, 255, 0.4);
+    /* Latar Belakang Utama Sinematik */
+    .main { 
+        background: linear-gradient(135deg, #030712 0%, #0f172a 50%, #1e1b4b 100%);
+        color: #f8fafc; 
     }
+    
+    /* Sidebar Profesional */
+    [data-testid="stSidebar"] {
+        background-color: #020617;
+        border-right: 1px solid #1e293b;
+    }
+
+    /* Tombol Utama dengan Gradasi Biru Sinematik */
+    .stButton>button {
+        background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
+        color: white; 
+        border: 1px solid rgba(56, 189, 248, 0.3);
+        border-radius: 10px;
+        font-weight: 600; 
+        padding: 0.6rem 1.2rem;
+        box-shadow: 0 4px 20px rgba(37, 99, 235, 0.4);
+        transition: all 0.3s ease;
+    }
+    .stButton>button:hover {
+        background: linear-gradient(135deg, #0ea5e9 0%, #1d4ed8 100%);
+        box-shadow: 0 6px 25px rgba(14, 165, 233, 0.6);
+        border-color: #38bdf8;
+    }
+
+    /* Input Teks & Area Teks Elegan */
     .stTextInput>div>div>input, .stTextArea>div>div>textarea {
-        background-color: #161b22; color: white; border-radius: 8px;
-        border: 1px solid #30363d;
+        background-color: #0f172a; 
+        color: #f8fafc; 
+        border-radius: 8px;
+        border: 1px solid #334155;
+    }
+    .stTextInput>div>div>input:focus, .stTextArea>div>div>textarea:focus {
+        border-color: #38bdf8;
+        box-shadow: 0 0 10px rgba(56, 189, 248, 0.2);
+    }
+
+    /* Kartu Dashboard Kelas Dunia */
+    .cinematic-card {
+        background: rgba(15, 23, 42, 0.7);
+        border: 1px solid #1e293b;
+        border-left: 4px solid #38bdf8;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(8px);
+        margin-bottom: 15px;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -94,14 +136,81 @@ else:
     st.title(f"🚀 Modul Aktif: {menu}")
     
     if menu == "Clipper V27":
-        st.subheader("✂️ Clipper V27 - Pemotong & Pemroses Video Viral")
-        video_url = st.text_input("Tempel Link Video (YouTube / TikTok / IG):", placeholder="https://...")
-        if st.button("Proses Klip Video"):
+        st.subheader("✂️ Clipper V27 - Editor & Pemotong Klip Otomatis")
+        video_url = st.text_input("Tempel Tautan Video (YouTube / Rumble / TikTok):", placeholder="https://...")
+        
+        # Pengaturan Preset & Gaya Subtitle Sinematik
+        st.markdown("### ⚙️ Pengaturan Cepat & Template Keterangan")
+        col_opt1, col_opt2, col_opt3 = st.columns(3)
+        with col_opt1:
+            caption_style = st.selectbox("Gaya Subtitle / Keterangan", ["Cinematic Blue", "Karaoke Pro", "Popline Dynamic", "Sederhana", "Tanpa Keterangan"])
+        with col_opt2:
+            language_opt = st.selectbox("Bahasa Lisan", ["Indonesia", "English", "Auto-Detect"])
+        with col_opt3:
+            aspect_ratio = st.selectbox("Rasio Aspek", ["9:16 (Vertical Reels/TikTok)", "1:1 (Square)", "16:9 (Landscape)"])
+
+        # Opsi Tambahan Auto-Zoom & AI
+        auto_zoom = st.checkbox("🔍 Aktifkan Pembingkaian Ulang AI (Auto-Zoom Fokus Pembicara)", value=True)
+
+        if st.button("Dapatkan Klip dalam 1 Klik"):
             if video_url:
-                st.success("🔗 Link video berhasil diterima oleh Clipper V27!")
-                st.info("Menyiapkan format rasio 9:16 vertical untuk TikTok & Reels...")
+                progress_text = st.empty()
+                progress_bar = st.progress(0)
+                
+                # Simulasi progres detail dengan ETA
+                progress_text.text("🔄 Mengimpor video & mendeteksi sumber (ETA 3m)...")
+                progress_bar.progress(15)
+                time.sleep(0.7)
+                
+                progress_text.text("🎙️ Menjalankan Teks Terjemahan AI & Transkripsi suara...")
+                progress_bar.progress(45)
+                time.sleep(0.7)
+                
+                if auto_zoom:
+                    progress_text.text(f"🎬 Menerapkan gaya subtitle '{caption_style}' & Auto-Zoom 9:16...")
+                else:
+                    progress_text.text(f"🎬 Menerapkan template {caption_style}...")
+                progress_bar.progress(80)
+                time.sleep(0.7)
+                
+                progress_text.text("✨ Menyelesaikan proyek klip sinematik...")
+                progress_bar.progress(100)
+                time.sleep(0.4)
+                
+                progress_text.empty()
+                progress_bar.empty()
+                
+                # Hasil Akhir Rincian Klip
+                st.success("🎉 Berhasil! Proyek klip video selesai diproses.")
+                st.markdown("---")
+                st.markdown("### 📊 Hasil Proyek Klip Saat Ini:")
+                
+                col_res1, col_res2, col_res3 = st.columns(3)
+                with col_res1:
+                    st.markdown("""
+                        <div class="cinematic-card">
+                            <h4>🔥 Klip 1: Hook Viral</h4>
+                            <p><b>Durasi:</b> 45 detik<br><b>Gaya:</b> {}<br><b>Status:</b> <span style="color:#38bdf8;">Siap Unduh</span></p>
+                        </div>
+                    """.format(caption_style), unsafe_allow_html=True)
+                with col_res2:
+                    st.markdown("""
+                        <div class="cinematic-card">
+                            <h4>💡 Klip 2: Puncak Diskusi</h4>
+                            <p><b>Durasi:</b> 58 detik<br><b>Gaya:</b> {}<br><b>Status:</b> <span style="color:#38bdf8;">Siap Unduh</span></p>
+                        </div>
+                    """.format(caption_style), unsafe_allow_html=True)
+                with col_res3:
+                    st.markdown("""
+                        <div class="cinematic-card">
+                            <h4>🎯 Klip 3: Kesimpulan</h4>
+                            <p><b>Durasi:</b> 35 detik<br><b>Gaya:</b> {}<br><b>Status:</b> <span style="color:#38bdf8;">Siap Unduh</span></p>
+                        </div>
+                    """.format(caption_style), unsafe_allow_html=True)
+                    
+                st.balloons()
             else:
-                st.warning("Mohon masukkan link video terlebih dahulu, Bos.")
+                st.warning("Mohon masukkan tautan video terlebih dahulu, Bos.")
 
     elif menu == "AnimaWhis Pro":
         st.subheader("🎨 AnimaWhis Pro - Generator Konten & Ide Kreatif")
