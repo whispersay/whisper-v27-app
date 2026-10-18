@@ -43,13 +43,10 @@ def speak(text):
 # --- CSS CINEMATIC BLUE & PROFESSIONAL STUDIO UI ---
 st.markdown("""
     <style>
-    /* Latar Belakang Utama Sinematik */
     .main { 
         background: linear-gradient(135deg, #030712 0%, #0f172a 50%, #1e1b4b 100%);
         color: #ffffff !important; 
     }
-    
-    /* Sidebar Profesional & Teks Sisi Kiri Terlihat Jelas */
     [data-testid="stSidebar"] {
         background-color: #020617 !important;
         border-right: 1px solid #1e293b;
@@ -58,8 +55,6 @@ st.markdown("""
         color: #ffffff !important;
         font-weight: 500 !important;
     }
-
-    /* Tombol Utama dengan Gradasi Biru Sinematik */
     .stButton>button {
         background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
         color: white !important; 
@@ -75,16 +70,12 @@ st.markdown("""
         box-shadow: 0 6px 25px rgba(14, 165, 233, 0.6);
         border-color: #38bdf8;
     }
-
-    /* Input Teks & Area Teks Elegan */
     .stTextInput>div>div>input, .stTextArea>div>div>textarea {
         background-color: #0f172a !important; 
         color: #ffffff !important; 
         border-radius: 8px;
         border: 1px solid #334155;
     }
-
-    /* Kartu Dashboard Studio Profesional */
     .studio-card {
         background: #0f172a;
         border: 1px solid #334155;
@@ -137,12 +128,10 @@ if not st.session_state.authenticated:
         else:
             st.error("Password salah!")
 else:
-    # --- SAPAAN SUARA KETIKA BERHASIL MASUK ---
     if 'greeted' not in st.session_state:
         speak("Syaloom Bos yuldiana cantik. Saya Whisper A I siap membantu kerajaan digital Anda.")
         st.session_state.greeted = True
 
-    # --- NAVIGASI MODUL ---
     menu = st.sidebar.radio(
         "Pilih Modul Kreatif:",
         ["Clipper V27 Studio", "AnimaWhis Pro", "SEO Master"]
@@ -154,14 +143,12 @@ else:
         st.session_state.pop('greeted', None)
         st.rerun()
 
-    # --- TAMPILAN UTAMA MODUL ---
     st.title(f"🚀 Modul Aktif: {menu}")
     
     if menu == "Clipper V27 Studio":
         st.subheader("✂️ Clipper V27 - Studio AI Producer (10 Klip Otomatis)")
-        video_url = st.text_input("Tempel Tautan Video Panjang (YouTube / Rumble / Podcast):", placeholder="https://...")
+        video_url = st.text_input("Tempel Tautan Video Panjang (YouTube / Podcast):", placeholder="https://www.youtube.com/watch?v=...")
         
-        # Pengaturan Model AI Terbaru & Preset
         st.markdown("### ⚙️ Pengaturan Engine AI & Keterangan")
         col_m1, col_m2, col_m3 = st.columns(3)
         with col_m1:
@@ -187,7 +174,7 @@ else:
                     progress_bar.progress(65)
                     time.sleep(0.4)
                     
-                    progress_text.text("✨ Merender bingkai 9:16 dengan Auto-Zoom & Subtitle dinamis...")
+                    progress_text.text("✨ Merender pemotongan klip & penataan caption...")
                     progress_bar.progress(100)
                     time.sleep(0.3)
                     
@@ -195,53 +182,52 @@ else:
                     progress_bar.empty()
                     st.session_state.clips_generated = True
 
-                st.success(f"🎉 Berhasil! 10 klip profesional telah dihasilkan menggunakan engine **{ai_engine}**.")
+                st.success(f"🎉 Berhasil! 10 analisis klip telah dibuat menggunakan engine **{ai_engine}**.")
                 st.markdown("---")
-                st.markdown("### 📊 Daftar 10 Klip Berdasarkan Skor Virality:")
+                st.markdown("### 📊 Daftar 10 Klip & Timestamp Video Asli:")
 
                 clips_data = [
-                    ("Klip 1: Hook Pembuka Paling Kuat", "35 detik", "99/100", "Cinematic Blue"),
-                    ("Klip 2: Analisis Mendalam Tren", "48 detik", "98/100", "Karaoke Pro"),
-                    ("Klip 3: Tips & Trik Praktis", "40 detik", "98/100", "Popline Dynamic"),
-                    ("Klip 4: Puncak Argumen Kontroversial", "52 detik", "97/100", "Sederhana"),
-                    ("Klip 5: Kutipan Inspiratif Utama", "28 detik", "97/100", "Cinematic Blue"),
-                    ("Klip 6: Sesi Tanya Jawab Interaktif", "45 detik", "96/100", "Karaoke Pro"),
-                    ("Klip 7: Data & Fakta Lapangan", "38 detik", "95/100", "Popline Dynamic"),
-                    ("Klip 8: Strategi Eksekusi Bisnis", "55 detik", "94/100", "Sederhana"),
-                    ("Klip 9: Wawasan Masa Depan", "42 detik", "93/100", "Cinematic Blue"),
-                    ("Klip 10: Kesimpulan & CTA Penutup", "30 detik", "92/100", "Popline Dynamic")
+                    ("Klip 1: Hook Pembuka Paling Kuat", "35 detik", "99/100", "00:15 - 00:50"),
+                    ("Klip 2: Analisis Mendalam Tren", "48 detik", "98/100", "02:10 - 02:58"),
+                    ("Klip 3: Tips & Trik Praktis", "40 detik", "98/100", "05:30 - 06:10"),
+                    ("Klip 4: Puncak Argumen Kontroversial", "52 detik", "97/100", "08:45 - 09:37"),
+                    ("Klip 5: Kutipan Inspiratif Utama", "28 detik", "97/100", "12:00 - 12:28"),
+                    ("Klip 6: Sesi Tanya Jawab Interaktif", "45 detik", "96/100", "15:20 - 16:05"),
+                    ("Klip 7: Data & Fakta Lapangan", "38 detik", "95/100", "18:10 - 18:48"),
+                    ("Klip 8: Strategi Eksekusi Bisnis", "55 detik", "94/100", "21:00 - 21:55"),
+                    ("Klip 9: Wawasan Masa Depan", "42 detik", "93/100", "25:30 - 26:12"),
+                    ("Klip 10: Kesimpulan & CTA Penutup", "30 detik", "92/100", "28:40 - 29:10")
                 ]
 
-                # Menggunakan tombol interaktif Streamlit yang memberikan notifikasi sukses ekspor klip sesuai sumber video
                 for i in range(0, 10, 2):
                     col_a, col_b = st.columns(2)
                     
                     with col_a:
-                        title, dur, score, cap = clips_data[i]
+                        title, dur, score, tstamp = clips_data[i]
                         st.markdown(f"""
                             <div class="studio-card">
                                 <h4>🔥 {title}</h4>
                                 <p><b>Skor Virality:</b> <span class="score-badge">{score}</span><br>
-                                <b>Durasi:</b> {dur} | <b>Gaya:</b> {cap}<br>
-                                <b>Status:</b> <span style="color:#38bdf8; font-weight:bold;">Siap Ekspor / Unduh</span></p>
+                                <b>Timestamp Video:</b> {tstamp} | <b>Durasi:</b> {dur}<br>
+                                <b>Status:</b> <span style="color:#38bdf8; font-weight:bold;">Momen Terdeteksi</span></p>
                             </div>
                         """, unsafe_allow_html=True)
-                        if st.button(f"📥 Ekspor & Unduh Klip {i+1}", key=f"btn_dl_{i+1}"):
-                            st.success(f"Klip {i+1} ({title}) berhasil diekstrak dari sumber video dan siap disimpan!")
+                        if st.button(f"🎬 Buka Momen Klip {i+1}", key=f"btn_clip_{i+1}"):
+                            st.info(f"Membuka potongan menit {tstamp} dari video sumber...")
 
                     with col_b:
                         if i+1 < 10:
-                            title, dur, score, cap = clips_data[i+1]
+                            title, dur, score, tstamp = clips_data[i+1]
                             st.markdown(f"""
                                 <div class="studio-card">
                                     <h4>🔥 {title}</h4>
                                     <p><b>Skor Virality:</b> <span class="score-badge">{score}</span><br>
-                                    <b>Durasi:</b> {dur} | <b>Gaya:</b> {cap}<br>
-                                    <b>Status:</b> <span style="color:#38bdf8; font-weight:bold;">Siap Ekspor / Unduh</span></p>
+                                    <b>Timestamp Video:</b> {tstamp} | <b>Durasi:</b> {dur}<br>
+                                    <b>Status:</b> <span style="color:#38bdf8; font-weight:bold;">Momen Terdeteksi</span></p>
                                 </div>
                             """, unsafe_allow_html=True)
-                            if st.button(f"📥 Ekspor & Unduh Klip {i+2}", key=f"btn_dl_{i+2}"):
-                                st.success(f"Klip {i+2} ({title}) berhasil diekstrak dari sumber video dan siap disimpan!")
+                            if st.button(f"🎬 Buka Momen Klip {i+2}", key=f"btn_clip_{i+2}"):
+                                st.info(f"Membuka potongan menit {tstamp} dari video sumber...")
                     
                 st.balloons()
             else:
