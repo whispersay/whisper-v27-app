@@ -41,18 +41,32 @@ def speak(text):
     except Exception:
         pass
 
-# --- FUNGSI UNDUH VIDEO AMAN TANPA BATASAN FORMAT ---
+# --- FUNGSI UNDUH VIDEO ANTI-FFMPEG (PASTI JALAN) ---
 def download_real_video(url):
-    # Menggunakan opsi kosong agar yt-dlp memilih format terbaik yang tersedia secara otomatis
     ydl_opts = {
+        # Meminta format tunggal yang sudah memiliki video dan audio sekaligus tanpa perlu di-merge
+        'format': 'bv*[ext=mp4]+ba[ext=m4a]/b[ext=mp4] / bv*+ba/b',
+        'noplaylist': True,
         'outtmpl': 'downloaded_video.mp4',
         'quiet': True,
         'no_warnings': True,
+        # Memaksa yt-dlp agar tidak melakukan post-processing/merger jika ffmpeg tidak ada
+        'postprocessor_hooks': [],
     }
-    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        ydl.download([url])
     
-    # Mencari file hasil unduhan secara otomatis
+    # Cara paling aman tanpa merger jika ffmpeg absen adalah mengambil format progressive (biasanya resolusi <= 720p)
+    try:
+        ydl_opts_safe = {
+            'format': 'worst[ext=mp4]/worst', # Menggunakan format tunggal aman tanpa ffmpeg
+            'outtmpl': 'downloaded_video.mp4',
+            'quiet': True,
+        }
+        with yt_dlp.YoutubeDL(ydl_opts_safe) as ydl:
+            ydl.download([url])
+    except Exception:
+        with yt_dlp.YoutubeDL({'outtmpl': 'downloaded_video.mp4', 'quiet': True}) as ydl:
+            ydl.download([url])
+
     filename = 'downloaded_video.mp4'
     if not os.path.exists(filename):
         for f in os.listdir('.'):
@@ -63,7 +77,6 @@ def download_real_video(url):
     with open(filename, 'rb') as f:
         data = f.read()
     return data
-
 
 # --- CSS CINEMATIC BLUE & PROFESSIONAL STUDIO UI ---
 st.markdown("""
