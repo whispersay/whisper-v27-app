@@ -10,12 +10,19 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# --- MEMBACA SECRETS & KONEKSI API ---
-GEMINI_API_KEY = st.secrets.get("GEMINI_API_KEY", "")
-MASTER_PASSWORD = st.secrets.get("MASTER_PASSWORD", "123456")
+# --- MASTER PASSWORD (DIKUNCI DI KODE) & API KEY (DARI SECRETS) ---
+MASTER_PASSWORD = "yuldiana-secret-2026"
+
+try:
+    GEMINI_API_KEY = st.secrets["GEMINI_API_KEY"]
+except Exception:
+    GEMINI_API_KEY = ""
 
 if GEMINI_API_KEY:
-    genai.configure(api_key=GEMINI_API_KEY)
+    try:
+        genai.configure(api_key=GEMINI_API_KEY)
+    except Exception:
+        pass
 
 # --- CSS CUSTOM STYLING ---
 st.markdown("""
@@ -43,7 +50,7 @@ if not st.session_state.authenticated:
     st.title("🔐 Akses Terkunci")
     input_pass = st.text_input("Masukkan Master Password:", type="password")
     if st.button("Masuk"):
-        if input_pass == MASTER_PASSWORD:
+        if input_pass.strip() == MASTER_PASSWORD:
             st.session_state.authenticated = True
             st.success("Akses Diberikan! Selamat datang, Bos.")
             st.rerun()
@@ -81,7 +88,7 @@ else:
                 except Exception as e:
                     st.error(f"Gagal memproses AI: {e}")
             else:
-                st.warning("API Key Gemini belum terkonfigurasi di Secrets.")
+                st.warning("API Key Gemini belum diatur di Secrets Streamlit Cloud.")
 
     elif menu == "SEO Master":
         st.subheader("📈 SEO Master - Optimasi Judul & Deskripsi")
@@ -95,4 +102,4 @@ else:
                 except Exception as e:
                     st.error(f"Gagal memproses AI: {e}")
             else:
-                st.warning("API Key Gemini belum terkonfigurasi di Secrets.")
+                st.warning("API Key Gemini belum diatur di Secrets Streamlit Cloud.")
