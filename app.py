@@ -40,26 +40,30 @@ def speak(text):
     except Exception:
         pass
 
-# --- CSS CINEMATIC BLUE & LUXURY UI ---
+# --- CSS CINEMATIC BLUE & PENINGKATAN KONTRAS SISI KIRI ---
 st.markdown("""
     <style>
     /* Latar Belakang Utama Sinematik */
     .main { 
         background: linear-gradient(135deg, #030712 0%, #0f172a 50%, #1e1b4b 100%);
-        color: #f8fafc; 
+        color: #ffffff !important; 
     }
     
-    /* Sidebar Profesional */
+    /* Sidebar Profesional & Teks Sisi Kiri Terlihat Jelas */
     [data-testid="stSidebar"] {
-        background-color: #020617;
+        background-color: #020617 !important;
         border-right: 1px solid #1e293b;
+    }
+    [data-testid="stSidebar"] div, [data-testid="stSidebar"] span, [data-testid="stSidebar"] label, [data-testid="stSidebar"] p {
+        color: #ffffff !important;
+        font-weight: 500 !important;
     }
 
     /* Tombol Utama dengan Gradasi Biru Sinematik */
     .stButton>button {
         background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
-        color: white; 
-        border: 1px solid rgba(56, 189, 248, 0.3);
+        color: white !important; 
+        border: 1px solid rgba(56, 189, 248, 0.4);
         border-radius: 10px;
         font-weight: 600; 
         padding: 0.6rem 1.2rem;
@@ -74,26 +78,32 @@ st.markdown("""
 
     /* Input Teks & Area Teks Elegan */
     .stTextInput>div>div>input, .stTextArea>div>div>textarea {
-        background-color: #0f172a; 
-        color: #f8fafc; 
+        background-color: #0f172a !important; 
+        color: #ffffff !important; 
         border-radius: 8px;
         border: 1px solid #334155;
     }
-    .stTextInput>div>div>input:focus, .stTextArea>div>div>textarea:focus {
-        border-color: #38bdf8;
-        box-shadow: 0 0 10px rgba(56, 189, 248, 0.2);
-    }
 
-    /* Kartu Dashboard Kelas Dunia */
+    /* Kartu Dashboard Sinematik Berkontras Tinggi */
     .cinematic-card {
-        background: rgba(15, 23, 42, 0.7);
-        border: 1px solid #1e293b;
+        background: #0f172a;
+        border: 1px solid #334155;
         border-left: 4px solid #38bdf8;
         padding: 20px;
         border-radius: 12px;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        backdrop-filter: blur(8px);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
         margin-bottom: 15px;
+        color: #ffffff !important;
+    }
+    .cinematic-card h4 {
+        color: #38bdf8 !important;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+    .cinematic-card p {
+        color: #e2e8f0 !important;
+        font-size: 14px;
+        line-height: 1.6;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -180,33 +190,43 @@ else:
                 progress_text.empty()
                 progress_bar.empty()
                 
-                # Hasil Akhir Rincian Klip
+                # Hasil Akhir Rincian Klip dengan Tombol Aksi
                 st.success("🎉 Berhasil! Proyek klip video selesai diproses.")
                 st.markdown("---")
                 st.markdown("### 📊 Hasil Proyek Klip Saat Ini:")
                 
                 col_res1, col_res2, col_res3 = st.columns(3)
                 with col_res1:
-                    st.markdown("""
+                    st.markdown(f"""
                         <div class="cinematic-card">
                             <h4>🔥 Klip 1: Hook Viral</h4>
-                            <p><b>Durasi:</b> 45 detik<br><b>Gaya:</b> {}<br><b>Status:</b> <span style="color:#38bdf8;">Siap Unduh</span></p>
+                            <p><b>Durasi:</b> 45 detik<br>
+                            <b>Gaya:</b> {caption_style}<br>
+                            <b>Status:</b> <span style="color:#38bdf8; font-weight:bold;">Siap Unduh</span></p>
                         </div>
-                    """.format(caption_style), unsafe_allow_html=True)
+                    """, unsafe_allow_html=True)
+                    st.button("📥 Unduh Klip 1", key="btn_clip1")
+
                 with col_res2:
-                    st.markdown("""
+                    st.markdown(f"""
                         <div class="cinematic-card">
                             <h4>💡 Klip 2: Puncak Diskusi</h4>
-                            <p><b>Durasi:</b> 58 detik<br><b>Gaya:</b> {}<br><b>Status:</b> <span style="color:#38bdf8;">Siap Unduh</span></p>
+                            <p><b>Durasi:</b> 58 detik<br><b>Gaya:</b> {caption_style}<br>
+                            <b>Status:</b> <span style="color:#38bdf8; font-weight:bold;">Siap Unduh</span></p>
                         </div>
-                    """.format(caption_style), unsafe_allow_html=True)
+                    """, unsafe_allow_html=True)
+                    st.button("📥 Unduh Klip 2", key="btn_clip2")
+
                 with col_res3:
-                    st.markdown("""
+                    st.markdown(f"""
                         <div class="cinematic-card">
                             <h4>🎯 Klip 3: Kesimpulan</h4>
-                            <p><b>Durasi:</b> 35 detik<br><b>Gaya:</b> {}<br><b>Status:</b> <span style="color:#38bdf8;">Siap Unduh</span></p>
+                            <p><b>Durasi:</b> 35 detik<br>
+                            <b>Gaya:</b> {caption_style}<br>
+                            <b>Status:</b> <span style="color:#38bdf8; font-weight:bold;">Siap Unduh</span></p>
                         </div>
-                    """.format(caption_style), unsafe_allow_html=True)
+                    """, unsafe_allow_html=True)
+                    st.button("📥 Unduh Klip 3", key="btn_clip3")
                     
                 st.balloons()
             else:
