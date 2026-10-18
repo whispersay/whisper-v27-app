@@ -75,8 +75,8 @@ if not st.session_state.authenticated:
             st.error("Password salah!")
 else:
     # --- SAPAAN SUARA KETIKA BERHASIL MASUK ---
-    if 'greeted' not in st.session_state:
-        speak("Halo Assalamualaikum Bos yuldiana. Saya Whisper A I siap membantu kerajaan digital Anda.")
+   if 'greeted' not in st.session_state:
+        speak("Syaloom Bos yuldiana cantik. Saya Whisper A I siap membantu kerajaan digital Anda.")
         st.session_state.greeted = True
 
     # --- NAVIGASI MODUL ---
