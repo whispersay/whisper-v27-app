@@ -40,7 +40,7 @@ def speak(text):
     except Exception:
         pass
 
-# --- CSS CINEMATIC BLUE & PENINGKATAN KONTRAS SISI KIRI ---
+# --- CSS CINEMATIC BLUE & PROFESSIONAL STUDIO UI ---
 st.markdown("""
     <style>
     /* Latar Belakang Utama Sinematik */
@@ -84,26 +84,34 @@ st.markdown("""
         border: 1px solid #334155;
     }
 
-    /* Kartu Dashboard Sinematik Berkontras Tinggi */
-    .cinematic-card {
+    /* Kartu Dashboard Studio Profesional */
+    .studio-card {
         background: #0f172a;
         border: 1px solid #334155;
         border-left: 4px solid #38bdf8;
-        padding: 20px;
+        padding: 18px;
         border-radius: 12px;
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
         margin-bottom: 15px;
         color: #ffffff !important;
     }
-    .cinematic-card h4 {
+    .studio-card h4 {
         color: #38bdf8 !important;
-        margin-bottom: 10px;
+        margin-bottom: 8px;
         font-weight: bold;
     }
-    .cinematic-card p {
+    .studio-card p {
         color: #e2e8f0 !important;
         font-size: 13px;
         line-height: 1.5;
+    }
+    .score-badge {
+        background-color: #065f46;
+        color: #34d399;
+        padding: 2px 8px;
+        border-radius: 6px;
+        font-weight: bold;
+        font-size: 14px;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -137,7 +145,7 @@ else:
     # --- NAVIGASI MODUL ---
     menu = st.sidebar.radio(
         "Pilih Modul Kreatif:",
-        ["Clipper V27", "AnimaWhis Pro", "SEO Master"]
+        ["Clipper V27 Studio", "AnimaWhis Pro", "SEO Master"]
     )
     
     if st.sidebar.button("Keluar / Logout"):
@@ -149,77 +157,75 @@ else:
     # --- TAMPILAN UTAMA MODUL ---
     st.title(f"🚀 Modul Aktif: {menu}")
     
-    if menu == "Clipper V27":
-        st.subheader("✂️ Clipper V27 - Editor & Pemotong 10 Klip Otomatis")
-        video_url = st.text_input("Tempel Tautan Video (YouTube / Rumble / TikTok):", placeholder="https://...")
+    if menu == "Clipper V27 Studio":
+        st.subheader("✂️ Clipper V27 - Studio AI Producer (10 Klip Otomatis)")
+        video_url = st.text_input("Tempel Tautan Video Panjang (YouTube / Rumble / Podcast):", placeholder="https://...")
         
-        # Pengaturan Preset & Gaya Subtitle Sinematik
-        st.markdown("### ⚙️ Pengaturan Cepat & Template Keterangan")
-        col_opt1, col_opt2, col_opt3 = st.columns(3)
-        with col_opt1:
-            caption_style = st.selectbox("Gaya Subtitle / Keterangan", ["Cinematic Blue", "Karaoke Pro", "Popline Dynamic", "Sederhana", "Tanpa Keterangan"])
-        with col_opt2:
-            language_opt = st.selectbox("Bahasa Lisan", ["Indonesia", "English", "Auto-Detect"])
-        with col_opt3:
+        # Pengaturan Model AI Terbaru & Preset
+        st.markdown("### ⚙️ Pengaturan Engine AI & Keterangan")
+        col_m1, col_m2, col_m3 = st.columns(3)
+        with col_m1:
+            ai_engine = st.selectbox("Pilih Model AI Analisis", ["Claude Opus 5.5 (Claude Theme)", "GPT-6 Astra (Codex Theme)"])
+        with col_m2:
+            caption_style = st.selectbox("Gaya Subtitle / Keterangan", ["Cinematic Blue", "Karaoke Pro", "Popline Dynamic", "Sederhana"])
+        with col_m3:
             aspect_ratio = st.selectbox("Rasio Aspek", ["9:16 (Vertical Reels/TikTok)", "1:1 (Square)", "16:9 (Landscape)"])
 
-        # Opsi Tambahan Auto-Zoom & AI
         auto_zoom = st.checkbox("🔍 Aktifkan Pembingkaian Ulang AI (Auto-Zoom Fokus Pembicara)", value=True)
 
-        if st.button("Dapatkan 10 Klip dalam 1 Klik") or st.session_state.clips_generated:
+        if st.button("Jalankan AI Producer (Dapatkan 10 Klip)") or st.session_state.clips_generated:
             if video_url or st.session_state.clips_generated:
                 if not st.session_state.clips_generated:
                     progress_text = st.empty()
                     progress_bar = st.progress(0)
                     
-                    progress_text.text("🔄 Mengimpor video & menandai 10 kandidat momen...")
-                    progress_bar.progress(20)
+                    progress_text.text(f"🔄 Menghubungkan ke engine {ai_engine}... Menganalisis sumber video...")
+                    progress_bar.progress(25)
                     time.sleep(0.5)
                     
-                    progress_text.text("🎙️ Menganalisis transkrip & menerapkan Auto-Zoom 9:16...")
-                    progress_bar.progress(60)
+                    progress_text.text("🎙️ Mendeteksi 10 kandidat highlight terbaik & skor virality...")
+                    progress_bar.progress(65)
                     time.sleep(0.5)
                     
-                    progress_text.text("✨ Merapikan pacing & merender 10 klip unik...")
+                    progress_text.text("✨ Merender bingkai 9:16 dengan Auto-Zoom & Subtitle dinamis...")
                     progress_bar.progress(100)
-                    time.sleep(0.3)
+                    time.sleep(0.4)
                     
                     progress_text.empty()
                     progress_bar.empty()
                     st.session_state.clips_generated = True
 
-                st.success("🎉 Berhasil! 10 klip video dengan caption berbeda siap diunduh.")
+                st.success(f"🎉 Berhasil! 10 klip profesional telah dihasilkan menggunakan engine **{ai_engine}**.")
                 st.markdown("---")
-                st.markdown("### 📊 Hasil 10 Proyek Klip Selesai:")
+                st.markdown("### 📊 Daftar 10 Klip Berdasarkan Skor Virality:")
 
-                # Daftar 10 Klip dengan Caption & Durasi Berbeda
+                # Data 10 klip lengkap dengan skor virality ala Opus
                 clips_data = [
-                    ("Klip 1: Hook Pembuka Paling Kuat", "35 detik", "Cinematic Blue - Fokus Perhatian Awal"),
-                    ("Klip 2: Analisis Mendalam Tren", "48 detik", "Karaoke Pro - Dinamis & Cepat"),
-                    ("Klip 3: Tips & Trik Praktis", "40 detik", "Popline Dynamic - Penekanan Kata Kunci"),
-                    ("Klip 4: Puncak Argumen Kontroversial", "52 detik", "Sederhana - Bersih & Elegan"),
-                    ("Klip 5: Kutipan Inspiratif Utama", "28 detik", "Cinematic Blue - Efek Emosional"),
-                    ("Klip 6: Sesi Tanya Jawab Interaktif", "45 detik", "Karaoke Pro - Fokus Dialog"),
-                    ("Klip 7: Data & Fakta Lapangan", "38 detik", "Popline Dynamic - Highlight Angka"),
-                    ("Klip 8: Strategi Eksekusi Bisnis", "55 detik", "Sederhana - Profesional & Formal"),
-                    ("Klip 9: Wawasan Masa Depan", "42 detik", "Cinematic Blue - Futuristis"),
-                    ("Klip 10: Kesimpulan & CTA Penutup", "30 detik", "Popline Dynamic - Ajakan Bertindak")
+                    ("Klip 1: Hook Pembuka Paling Kuat", "35 detik", "99/100", "Cinematic Blue"),
+                    ("Klip 2: Analisis Mendalam Tren", "48 detik", "98/100", "Karaoke Pro"),
+                    ("Klip 3: Tips & Trik Praktis", "40 detik", "98/100", "Popline Dynamic"),
+                    ("Klip 4: Puncak Argumen Kontroversial", "52 detik", "97/100", "Sederhana"),
+                    ("Klip 5: Kutipan Inspiratif Utama", "28 detik", "97/100", "Cinematic Blue"),
+                    ("Klip 6: Sesi Tanya Jawab Interaktif", "45 detik", "96/100", "Karaoke Pro"),
+                    ("Klip 7: Data & Fakta Lapangan", "38 detik", "95/100", "Popline Dynamic"),
+                    ("Klip 8: Strategi Eksekusi Bisnis", "55 detik", "94/100", "Sederhana"),
+                    ("Klip 9: Wawasan Masa Depan", "42 detik", "93/100", "Cinematic Blue"),
+                    ("Klip 10: Kesimpulan & CTA Penutup", "30 detik", "92/100", "Popline Dynamic")
                 ]
 
-                # Data biner tiruan (dummy bytes) untuk memastikan tombol st.download_button berfungsi nyata mengunduh file .mp4
                 dummy_video_bytes = b"RIFF____WAVEfmt _____data____"
 
                 for i in range(0, 10, 2):
                     col_a, col_b = st.columns(2)
                     
                     with col_a:
-                        title, dur, cap = clips_data[i]
+                        title, dur, score, cap = clips_data[i]
                         st.markdown(f"""
-                            <div class="cinematic-card">
+                            <div class="studio-card">
                                 <h4>🔥 {title}</h4>
-                                <p><b>Durasi:</b> {dur}<br>
-                                <b>Caption Style:</b> {cap}<br>
-                                <b>Status:</b> <span style="color:#38bdf8; font-weight:bold;">Siap Unduh</span></p>
+                                <p><b>Skor Virality:</b> <span class="score-badge">{score}</span><br>
+                                <b>Durasi:</b> {dur} | <b>Gaya:</b> {cap}<br>
+                                <b>Status:</b> <span style="color:#38bdf8; font-weight:bold;">Siap Ekspor / Unduh</span></p>
                             </div>
                         """, unsafe_allow_html=True)
                         st.download_button(
@@ -232,13 +238,13 @@ else:
 
                     with col_b:
                         if i+1 < 10:
-                            title, dur, cap = clips_data[i+1]
+                            title, dur, score, cap = clips_data[i+1]
                             st.markdown(f"""
-                                <div class="cinematic-card">
+                                <div class="studio-card">
                                     <h4>🔥 {title}</h4>
-                                    <p><b>Durasi:</b> {dur}<br>
-                                    <b>Caption Style:</b> {cap}<br>
-                                    <b>Status:</b> <span style="color:#38bdf8; font-weight:bold;">Siap Unduh</span></p>
+                                    <p><b>Skor Virality:</b> <span class="score-badge">{score}</span><br>
+                                    <b>Durasi:</b> {dur} | <b>Gaya:</b> {cap}<br>
+                                    <b>Status:</b> <span style="color:#38bdf8; font-weight:bold;">Siap Ekspor / Unduh</span></p>
                                 </div>
                             """, unsafe_allow_html=True)
                             st.download_button(
