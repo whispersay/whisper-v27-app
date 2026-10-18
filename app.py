@@ -174,15 +174,15 @@ else:
                     
                     progress_text.text("🔄 Mengimpor video & menandai 10 kandidat momen...")
                     progress_bar.progress(20)
-                    time.sleep(0.6)
+                    time.sleep(0.5)
                     
                     progress_text.text("🎙️ Menganalisis transkrip & menerapkan Auto-Zoom 9:16...")
                     progress_bar.progress(60)
-                    time.sleep(0.6)
+                    time.sleep(0.5)
                     
                     progress_text.text("✨ Merapikan pacing & merender 10 klip unik...")
                     progress_bar.progress(100)
-                    time.sleep(0.4)
+                    time.sleep(0.3)
                     
                     progress_text.empty()
                     progress_bar.empty()
@@ -206,7 +206,9 @@ else:
                     ("Klip 10: Kesimpulan & CTA Penutup", "30 detik", "Popline Dynamic - Ajakan Bertindak")
                 ]
 
-                # Menampilkan dalam 2 kolom grid (masing-masing 5 baris atau disusun rapi)
+                # Data biner tiruan (dummy bytes) untuk memastikan tombol st.download_button berfungsi nyata mengunduh file .mp4
+                dummy_video_bytes = b"RIFF____WAVEfmt _____data____"
+
                 for i in range(0, 10, 2):
                     col_a, col_b = st.columns(2)
                     
@@ -220,8 +222,13 @@ else:
                                 <b>Status:</b> <span style="color:#38bdf8; font-weight:bold;">Siap Unduh</span></p>
                             </div>
                         """, unsafe_allow_html=True)
-                        if st.button(f"📥 Unduh Klip {i+1}", key=f"dl_{i+1}"):
-                            st.info(f"Mengunduh Klip {i+1} ({title})...")
+                        st.download_button(
+                            label=f"📥 Unduh Klip {i+1} (.mp4)",
+                            data=dummy_video_bytes,
+                            file_name=f"whisper_clip_{i+1}.mp4",
+                            mime="video/mp4",
+                            key=f"dl_btn_{i+1}"
+                        )
 
                     with col_b:
                         if i+1 < 10:
@@ -234,8 +241,13 @@ else:
                                     <b>Status:</b> <span style="color:#38bdf8; font-weight:bold;">Siap Unduh</span></p>
                                 </div>
                             """, unsafe_allow_html=True)
-                            if st.button(f"📥 Unduh Klip {i+2}", key=f"dl_{i+2}"):
-                                st.info(f"Mengunduh Klip {i+2} ({title})...")
+                            st.download_button(
+                                label=f"📥 Unduh Klip {i+2} (.mp4)",
+                                data=dummy_video_bytes,
+                                file_name=f"whisper_clip_{i+2}.mp4",
+                                mime="video/mp4",
+                                key=f"dl_btn_{i+2}"
+                            )
                     
                 st.balloons()
             else:
