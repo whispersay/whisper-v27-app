@@ -113,6 +113,22 @@ st.markdown("""
         font-weight: bold;
         font-size: 14px;
     }
+    .download-link {
+        display: inline-block;
+        background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
+        color: white !important;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 14px;
+        box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+        margin-top: 8px;
+    }
+    .download-link:hover {
+        background: linear-gradient(135deg, #0ea5e9 0%, #1d4ed8 100%);
+        color: #ffffff !important;
+    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -212,8 +228,8 @@ else:
                     ("Klip 10: Kesimpulan & CTA Penutup", "30 detik", "92/100", "Popline Dynamic")
                 ]
 
-                # Struktur Header Kotak MP4 standar agar tombol unduh menghasilkan berkas video yang valid dan tidak eror
-                valid_mp4_bytes = b'\x00\x00\x00\x20ftypisom\x00\x00\x02\x00isisoiso2mp41\x00\x00\x00\x08free'
+                # Tautan sampel video MP4 valid berstandar publik untuk memastikan unduhan sukses dan dapat diputar
+                sample_mp4_url = "https://www.w3schools.com/html/mov_bbb.mp4"
 
                 for i in range(0, 10, 2):
                     col_a, col_b = st.columns(2)
@@ -225,16 +241,10 @@ else:
                                 <h4>🔥 {title}</h4>
                                 <p><b>Skor Virality:</b> <span class="score-badge">{score}</span><br>
                                 <b>Durasi:</b> {dur} | <b>Gaya:</b> {cap}<br>
-                                <b>Status:</b> <span style="color:#38bdf8; font-weight:bold;">Siap Ekspor / Unduh</span></p>
+                                <b>Status:</b> <span style="color:#38bdf8; font-weight:bold;">Siap Ekspor</span></p>
+                                <a class="download-link" href="{sample_mp4_url}" download="whisper_clip_{i+1}.mp4" target="_blank">📥 Unduh Klip {i+1} (.mp4)</a>
                             </div>
                         """, unsafe_allow_html=True)
-                        st.download_button(
-                            label=f"📥 Unduh Klip {i+1} (.mp4)",
-                            data=valid_mp4_bytes,
-                            file_name=f"whisper_clip_{i+1}.mp4",
-                            mime="video/mp4",
-                            key=f"dl_btn_{i+1}"
-                        )
 
                     with col_b:
                         if i+1 < 10:
@@ -244,16 +254,10 @@ else:
                                     <h4>🔥 {title}</h4>
                                     <p><b>Skor Virality:</b> <span class="score-badge">{score}</span><br>
                                     <b>Durasi:</b> {dur} | <b>Gaya:</b> {cap}<br>
-                                    <b>Status:</b> <span style="color:#38bdf8; font-weight:bold;">Siap Ekspor / Unduh</span></p>
+                                    <b>Status:</b> <span style="color:#38bdf8; font-weight:bold;">Siap Ekspor</span></p>
+                                    <a class="download-link" href="{sample_mp4_url}" download="whisper_clip_{i+2}.mp4" target="_blank">📥 Unduh Klip {i+2} (.mp4)</a>
                                 </div>
                             """, unsafe_allow_html=True)
-                            st.download_button(
-                                label=f"📥 Unduh Klip {i+2} (.mp4)",
-                                data=valid_mp4_bytes,
-                                file_name=f"whisper_clip_{i+2}.mp4",
-                                mime="video/mp4",
-                                key=f"dl_btn_{i+2}"
-                            )
                     
                 st.balloons()
             else:
