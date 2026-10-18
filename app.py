@@ -41,18 +41,28 @@ def speak(text):
     except Exception:
         pass
 
-# --- FUNGSI UNDUH VIDEO DENGAN DUKUNGAN FFMPEG SERVER ---
+# --- FUNGSI UNDUH VIDEO OTOMATIS DENGAN DUKUNGAN FFMPEG ---
 def download_real_video(url):
     ydl_opts = {
-        'format': 'best[ext=mp4]/best',
+        'format': 'bestvideo+bestaudio/best',  # Memanfaatkan ffmpeg server untuk hasil kualitas tertinggi
         'outtmpl': 'downloaded_video.mp4',
         'quiet': True,
         'no_warnings': True,
         'geo_bypass': True,
     }
     
-    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        ydl.download([url])
+    try:
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            ydl.download([url])
+    except Exception:
+        # Fallback cadangan jika format gabungan gagal
+        ydl_opts_fallback = {
+            'format': 'best',
+            'outtmpl': 'downloaded_video.mp4',
+            'quiet': True,
+        }
+        with yt_dlp.YoutubeDL(ydl_opts_fallback) as ydl:
+            ydl.download([url])
 
     filename = 'downloaded_video.mp4'
     if not os.path.exists(filename):
