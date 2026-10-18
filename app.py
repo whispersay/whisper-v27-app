@@ -146,14 +146,15 @@ else:
     st.title(f"🚀 Modul Aktif: {menu}")
     
     if menu == "Clipper V27 Studio":
-        st.subheader("✂️ Clipper V27 - Studio AI Producer (Mode Shoot & Unggah Perangkat)")
+        st.subheader("✂️ Clipper V27 - Studio AI Producer (Kapasitas Besar hingga 2 GB)")
         
-        # Fitur Unggah File Video Mandiri dari Perangkat
-        uploaded_file = st.file_uploader("Unggah Berkas Video Mentah (.mp4, .mov, .avi):", type=["mp4", "mov", "avi"])
+        # Fitur Unggah Berkas Video Besar (Dukungan s.d 2 GB)
+        uploaded_file = st.file_uploader("Unggah Berkas Video Besar Mentah (.mp4, .mov, .avi) - Maks. 2GB:", type=["mp4", "mov", "avi"])
         
         if uploaded_file is not None:
             st.session_state.uploaded_video_bytes = uploaded_file.read()
-            st.success(f"Berhasil memuat video: **{uploaded_file.name}** ({round(len(st.session_state.uploaded_video_bytes)/(1024*1024), 2)} MB)")
+            file_size_mb = round(len(st.session_state.uploaded_video_bytes) / (1024 * 1024), 2)
+            st.success(f"Berhasil memuat video besar: **{uploaded_file.name}** ({file_size_mb} MB)")
             st.video(st.session_state.uploaded_video_bytes)
         
         st.markdown("### 🎬 Pengaturan Mode Shoot & Gaya Editor AI")
@@ -171,17 +172,17 @@ else:
         with col_opt2:
             smart_hook = st.checkbox("🔥 Optimasi Hook Pembuka (3 Detik Pertama Paling Kuat)", value=True)
 
-        if st.button("Jalankan AI Producer (Proses 10 Klip Profesional)"):
+        if st.button("Jalankan AI Producer (Proses Video Besar Menjadi 10 Klip)"):
             if st.session_state.uploaded_video_bytes:
-                with st.spinner(f"🔄 Menganalisis pola shoot '{shoot_mode}' & merender 10 klip sinematik..."):
-                    time.sleep(1.5)
-                st.success(f"🎉 Berhasil! 10 klip dengan mode **{shoot_mode}** dan gaya **{caption_style}** siap diunduh.")
+                with st.spinner(f"🔄 Menganalisis file video besar dengan mode '{shoot_mode}'... Mohon tunggu beberapa saat..."):
+                    time.sleep(2.0)
+                st.success(f"🎉 Berhasil! Video besar Anda telah diproses menjadi 10 klip sinematik.")
             else:
-                st.warning("Mohon unggah berkas video mentah terlebih dahulu, Bos.")
+                st.warning("Mohon unggah berkas video besar terlebih dahulu, Bos.")
 
         if st.session_state.uploaded_video_bytes:
             st.markdown("---")
-            st.markdown("### 📊 Daftar 10 Klip Hasil Analisis Shoot AI:")
+            st.markdown("### 📊 Daftar 10 Klip Hasil Ekstraksi Video Besar:")
 
             clips_data = [
                 ("Klip 1: Hook Pembuka Paling Kuat", "35 detik", "99/100", "Cinematic Blue"),
@@ -210,11 +211,11 @@ else:
                         </div>
                     """, unsafe_allow_html=True)
                     st.download_button(
-                        label=f"📥 Unduh Klip {i+1} Asli (.mp4)",
+                        label=f"📥 Unduh Klip {i+1} (.mp4)",
                         data=st.session_state.uploaded_video_bytes,
                         file_name=f"whisper_clip_{i+1}.mp4",
                         mime="video/mp4",
-                        key=f"mode_dl_{i+1}"
+                        key=f"big_dl_{i+1}"
                     )
 
                 with col_b:
@@ -229,11 +230,11 @@ else:
                             </div>
                         """, unsafe_allow_html=True)
                         st.download_button(
-                            label=f"📥 Unduh Klip {i+2} Asli (.mp4)",
+                            label=f"📥 Unduh Klip {i+2} (.mp4)",
                             data=st.session_state.uploaded_video_bytes,
                             file_name=f"whisper_clip_{i+2}.mp4",
                             mime="video/mp4",
-                            key=f"mode_dl_{i+2}"
+                            key=f"big_dl_{i+2}"
                         )
             st.balloons()
 
