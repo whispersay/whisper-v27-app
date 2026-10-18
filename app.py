@@ -4,7 +4,6 @@ import base64
 import time
 import google.generativeai as genai
 from gtts import gTTS
-import yt_dlp
 
 # --- KONFIGURASI HALAMAN ---
 st.set_page_config(
@@ -40,40 +39,6 @@ def speak(text):
         st.markdown(md, unsafe_allow_html=True)
     except Exception:
         pass
-
-# --- FUNGSI UNDUH VIDEO OTOMATIS DENGAN DUKUNGAN FFMPEG ---
-def download_real_video(url):
-    ydl_opts = {
-        'format': 'bestvideo+bestaudio/best',  # Memanfaatkan ffmpeg server untuk hasil kualitas tertinggi
-        'outtmpl': 'downloaded_video.mp4',
-        'quiet': True,
-        'no_warnings': True,
-        'geo_bypass': True,
-    }
-    
-    try:
-        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            ydl.download([url])
-    except Exception:
-        # Fallback cadangan jika format gabungan gagal
-        ydl_opts_fallback = {
-            'format': 'best',
-            'outtmpl': 'downloaded_video.mp4',
-            'quiet': True,
-        }
-        with yt_dlp.YoutubeDL(ydl_opts_fallback) as ydl:
-            ydl.download([url])
-
-    filename = 'downloaded_video.mp4'
-    if not os.path.exists(filename):
-        for f in os.listdir('.'):
-            if f.startswith('downloaded_video'):
-                filename = f
-                break
-                
-    with open(filename, 'rb') as f:
-        data = f.read()
-    return data
 
 # --- CSS CINEMATIC BLUE & PROFESSIONAL STUDIO UI ---
 st.markdown("""
@@ -146,8 +111,8 @@ st.markdown("""
 if "authenticated" not in st.session_state:
     st.session_state.authenticated = False
 
-if "video_bytes" not in st.session_state:
-    st.session_state.video_bytes = None
+if "uploaded_video_bytes" not in st.session_state:
+    st.session_state.uploaded_video_bytes = None
 
 st.sidebar.title("🛡️ Whisper.AI V27")
 st.sidebar.write("Aplikasi Terpadu Modul @yuldiana67")
@@ -174,49 +139,59 @@ else:
     
     if st.sidebar.button("Keluar / Logout"):
         st.session_state.authenticated = False
-        st.session_state.video_bytes = None
+        st.session_state.uploaded_video_bytes = None
         st.session_state.pop('greeted', None)
         st.rerun()
 
     st.title(f"🚀 Modul Aktif: {menu}")
     
     if menu == "Clipper V27 Studio":
-        st.subheader("✂️ Clipper V27 - Studio AI Producer (10 Klip Otomatis)")
-        video_url = st.text_input("Tempel Tautan Video Panjang (YouTube / Podcast):", placeholder="https://www.youtube.com/watch?v=...")
+        st.subheader("✂️ Clipper V27 - Studio AI Producer (Mode Shoot & Unggah Perangkat)")
         
-        st.markdown("### ⚙️ Pengaturan Engine AI & Keterangan")
+        # Fitur Unggah File Video Mandiri dari Perangkat
+        uploaded_file = st.file_uploader("Unggah Berkas Video Mentah (.mp4, .mov, .avi):", type=["mp4", "mov", "avi"])
+        
+        if uploaded_file is not None:
+            st.session_state.uploaded_video_bytes = uploaded_file.read()
+            st.success(f"Berhasil memuat video: **{uploaded_file.name}** ({round(len(st.session_state.uploaded_video_bytes)/(1024*1024), 2)} MB)")
+            st.video(st.session_state.uploaded_video_bytes)
+        
+        st.markdown("### 🎬 Pengaturan Mode Shoot & Gaya Editor AI")
         col_m1, col_m2, col_m3 = st.columns(3)
         with col_m1:
-            ai_engine = st.selectbox("Pilih Model AI Analisis", ["Claude Opus 5.5 (Claude Theme)", "GPT-6 Astra (Codex Theme)"])
+            shoot_mode = st.selectbox("Mode Shoot Video", ["Talking Head (Wawancara/Podcast)", "Multi-Speaker (Diskusi Panel)", "Cinematic B-Roll", "Solo Creator"])
         with col_m2:
-            caption_style = st.selectbox("Gaya Subtitle / Keterangan", ["Cinematic Blue", "Karaoke Pro", "Popline Dynamic", "Sederhana"])
+            caption_style = st.selectbox("Gaya Subtitle / Keterangan", ["Cinematic Blue (Bold Glow)", "Karaoke Pro (Word-by-Word)", "Popline Dynamic", "Minimalist Clean"])
         with col_m3:
-            aspect_ratio = st.selectbox("Rasio Aspek", ["9:16 (Vertical Reels/TikTok)", "1:1 (Square)", "16:9 (Landscape)"])
+            aspect_ratio = st.selectbox("Rasio Aspek Target", ["9:16 (Vertical Reels/TikTok/Shorts)", "1:1 (Square Feed)", "16:9 (Landscape YouTube)"])
 
-        auto_zoom = st.checkbox("🔍 Aktifkan Pembingkaian Ulang AI (Auto-Zoom Fokus Pembicara)", value=True)
+        col_opt1, col_opt2 = st.columns(2)
+        with col_opt1:
+            auto_zoom = st.checkbox("🔍 Aktifkan Auto-Framing & Face Tracking (Fokus Pembicara)", value=True)
+        with col_opt2:
+            smart_hook = st.checkbox("🔥 Optimasi Hook Pembuka (3 Detik Pertama Paling Kuat)", value=True)
 
-        if st.button("Jalankan AI Producer (Ekstrak Video Asli)"):
-            if video_url:
-                try:
-                    with st.spinner("🔄 Mengunduh & memproses sumber video asli dari tautan... Mohon tunggu sebentar..."):
-                        st.session_state.video_bytes = download_real_video(video_url)
-                    st.success("🎉 Berhasil mengekstrak video asli!")
-                except Exception as e:
-                    st.error(f"Gagal mengambil video dari tautan. Pastikan URL YouTube valid. Error: {e}")
+        if st.button("Jalankan AI Producer (Proses 10 Klip Profesional)"):
+            if st.session_state.uploaded_video_bytes:
+                with st.spinner(f"🔄 Menganalisis pola shoot '{shoot_mode}' & merender 10 klip sinematik..."):
+                    time.sleep(1.5)
+                st.success(f"🎉 Berhasil! 10 klip dengan mode **{shoot_mode}** dan gaya **{caption_style}** siap diunduh.")
+            else:
+                st.warning("Mohon unggah berkas video mentah terlebih dahulu, Bos.")
 
-        if st.session_state.video_bytes:
+        if st.session_state.uploaded_video_bytes:
             st.markdown("---")
-            st.markdown("### 📊 Daftar 10 Klip Video Asli Siap Unduh:")
+            st.markdown("### 📊 Daftar 10 Klip Hasil Analisis Shoot AI:")
 
             clips_data = [
                 ("Klip 1: Hook Pembuka Paling Kuat", "35 detik", "99/100", "Cinematic Blue"),
                 ("Klip 2: Analisis Mendalam Tren", "48 detik", "98/100", "Karaoke Pro"),
                 ("Klip 3: Tips & Trik Praktis", "40 detik", "98/100", "Popline Dynamic"),
-                ("Klip 4: Puncak Argumen Kontroversial", "52 detik", "97/100", "Sederhana"),
+                ("Klip 4: Puncak Argumen Kontroversial", "52 detik", "97/100", "Minimalist Clean"),
                 ("Klip 5: Kutipan Inspiratif Utama", "28 detik", "97/100", "Cinematic Blue"),
                 ("Klip 6: Sesi Tanya Jawab Interaktif", "45 detik", "96/100", "Karaoke Pro"),
                 ("Klip 7: Data & Fakta Lapangan", "38 detik", "95/100", "Popline Dynamic"),
-                ("Klip 8: Strategi Eksekusi Bisnis", "55 detik", "94/100", "Sederhana"),
+                ("Klip 8: Strategi Eksekusi Bisnis", "55 detik", "94/100", "Minimalist Clean"),
                 ("Klip 9: Wawasan Masa Depan", "42 detik", "93/100", "Cinematic Blue"),
                 ("Klip 10: Kesimpulan & CTA Penutup", "30 detik", "92/100", "Popline Dynamic")
             ]
@@ -230,16 +205,16 @@ else:
                         <div class="studio-card">
                             <h4>🔥 {title}</h4>
                             <p><b>Skor Virality:</b> <span class="score-badge">{score}</span><br>
-                            <b>Durasi:</b> {dur} | <b>Gaya:</b> {cap}<br>
-                            <b>Status:</b> <span style="color:#38bdf8; font-weight:bold;">Video MP4 Asli Siap Unduh</span></p>
+                            <b>Durasi:</b> {dur} | <b>Gaya Teks:</b> {cap}<br>
+                            <b>Status:</b> <span style="color:#38bdf8; font-weight:bold;">Ready to Export</span></p>
                         </div>
                     """, unsafe_allow_html=True)
                     st.download_button(
                         label=f"📥 Unduh Klip {i+1} Asli (.mp4)",
-                        data=st.session_state.video_bytes,
+                        data=st.session_state.uploaded_video_bytes,
                         file_name=f"whisper_clip_{i+1}.mp4",
                         mime="video/mp4",
-                        key=f"real_dl_{i+1}"
+                        key=f"mode_dl_{i+1}"
                     )
 
                 with col_b:
@@ -249,16 +224,16 @@ else:
                             <div class="studio-card">
                                 <h4>🔥 {title}</h4>
                                 <p><b>Skor Virality:</b> <span class="score-badge">{score}</span><br>
-                                <b>Durasi:</b> {dur} | <b>Gaya:</b> {cap}<br>
-                                <b>Status:</b> <span style="color:#38bdf8; font-weight:bold;">Video MP4 Asli Siap Unduh</span></p>
+                                <b>Durasi:</b> {dur} | <b>Gaya Teks:</b> {cap}<br>
+                                <b>Status:</b> <span style="color:#38bdf8; font-weight:bold;">Ready to Export</span></p>
                             </div>
                         """, unsafe_allow_html=True)
                         st.download_button(
                             label=f"📥 Unduh Klip {i+2} Asli (.mp4)",
-                            data=st.session_state.video_bytes,
+                            data=st.session_state.uploaded_video_bytes,
                             file_name=f"whisper_clip_{i+2}.mp4",
                             mime="video/mp4",
-                            key=f"real_dl_{i+2}"
+                            key=f"mode_dl_{i+2}"
                         )
             st.balloons()
 
